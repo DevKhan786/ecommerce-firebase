@@ -1,4 +1,4 @@
-// app/product/[id]/page.tsx
+// src/app/product/[id]/page.tsx
 import React from "react";
 import { notFound } from "next/navigation";
 import Container from "@/components/Container";
@@ -10,11 +10,11 @@ interface ProductPageProps {
   params: {
     id: string;
   };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export const revalidate = 3600; // Revalidate at most every hour
+export const revalidate = 3600;
 
-// Generate static params for the most popular products
 export async function generateStaticParams() {
   const products = await getProducts();
   return products.slice(0, 10).map((product) => ({

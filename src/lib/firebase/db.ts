@@ -22,7 +22,6 @@ export const getProducts = async (): Promise<ProductType[]> => {
   return snapshot.docs.map((doc) => {
     const data = doc.data();
 
-    // Convert Firestore timestamp to ISO string
     return {
       id: doc.id,
       ...data,
