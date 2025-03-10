@@ -15,11 +15,14 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { id: string };
-} & Record<string, any>) {
+// Explicit type for component props
+interface ProductPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProduct(params.id);
 
   if (!product) {
