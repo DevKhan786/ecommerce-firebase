@@ -15,11 +15,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.id);
 
   if (!product) {
