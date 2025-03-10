@@ -14,14 +14,13 @@ export async function generateStaticParams() {
   }));
 }
 
-interface Props {
-  params: {
-    id: string;
-  };
+// src/app/product/[id]/page.tsx
+export default async function ProductPage({
+  params,
+}: {
+  params: { id: string };
   searchParams?: { [key: string]: string | string[] };
-}
-
-export default async function ProductPage({ params }: Props) {
+}) {
   const product = await getProduct(params.id);
 
   if (!product) {

@@ -1,4 +1,7 @@
-const nextConfig = {
+// next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   images: {
     domains: [
       "www.angeljackets.com",
