@@ -7,7 +7,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   fullWidth?: boolean;
-  asChild?: boolean;
   children: React.ReactNode;
 }
 
@@ -20,7 +19,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       isLoading = false,
       fullWidth = false,
-      asChild = false,
       disabled,
       ...props
     },

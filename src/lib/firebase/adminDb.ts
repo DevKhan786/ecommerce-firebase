@@ -2,12 +2,23 @@
 import { adminDb } from "./admin";
 import { CartItemType } from "../types";
 
+// Define a proper type for shipping address
+interface ShippingAddress {
+  name?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
+  [key: string]: string | undefined; // Allow for additional fields
+}
+
 export const createOrderAdmin = async (orderData: {
   userId: string;
   items: CartItemType[];
   totalAmount: number;
   status: string;
-  shippingAddress: any;
+  shippingAddress: ShippingAddress;
   paymentIntentId?: string;
 }) => {
   try {
