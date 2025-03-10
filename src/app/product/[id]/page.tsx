@@ -1,29 +1,47 @@
 // src/app/product/[id]/page.tsx
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Container from "@/components/Container";
 import ProductImage from "@/components/Product/ProductImage";
 import ProductInfo from "@/components/Product/ProductInfo";
-import { getProduct, getProducts } from "@/lib/firebase/db";
+import { getProduct } from "@/lib/firebase/db";
+import Loading from "@/components/ui/Loading";
+import { ProductType } from "../../../lib/types";
 
-export const revalidate = 3600;
+export default function ProductPage() {
+  const params = useParams<{ id: string }>();
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.slice(0, 10).map((product) => ({
-    id: product.id,
-  }));
-}
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data = await getProduct(params.id);
+        if (!data) {
+          notFound();
+        }
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
 
-// Explicit type for component props
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
+    fetchProduct();
+  }, [params.id]);
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProduct(params.id);
+  if (loading) {
+    return (
+      <Container className="py-12">
+        <Loading />
+      </Container>
+    );
+  }
 
   if (!product) {
     notFound();
