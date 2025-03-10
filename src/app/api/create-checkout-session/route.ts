@@ -4,7 +4,7 @@ import stripe from "@/lib/stripe/config";
 import { CartItemType } from "@/lib/types";
 import { createOrderAdmin } from "@/lib/firebase/adminDb";
 
-// Helper function to ensure URLs aren't too long for Stripe
+
 const getSafeImageUrl = (url: string): string => {
   if (url && url.length > 1800) {
     return "https://placehold.co/400x400?text=Product+Image";
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create line items for Stripe
+
     const lineItems = items.map((item: CartItemType) => ({
       price_data: {
         currency: "usd",
@@ -31,18 +31,18 @@ export async function POST(request: NextRequest) {
           name: item.name,
           images: item.image ? [getSafeImageUrl(item.image)] : [],
         },
-        unit_amount: Math.round(item.price * 100), // Convert to cents
+        unit_amount: Math.round(item.price * 100), 
       },
       quantity: item.quantity,
     }));
 
-    // Calculate total amount
+
     const totalAmount = items.reduce(
       (sum: number, item: CartItemType) => sum + item.price * item.quantity,
       0
     );
 
-    // Create Stripe checkout session
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create order in Firebase using Admin SDK
+   
     if (session.payment_intent) {
       await createOrderAdmin({
         userId: userId || "guest",

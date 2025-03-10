@@ -2,7 +2,6 @@
 
 // app/cart/page.tsx
 import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Container from "@/components/Container";
 import CartItem from "@/components/Cart/CartItem";
@@ -24,7 +23,7 @@ export default function CartPage() {
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-6">Your Cart is Empty</h1>
           <p className="text-gray-500 mb-8">
-            Looks like you haven't added any products to your cart yet.
+            Looks like you haven&apos;t added any products to your cart yet.
           </p>
           <Button onClick={handleContinueShopping}>Continue Shopping</Button>
         </div>

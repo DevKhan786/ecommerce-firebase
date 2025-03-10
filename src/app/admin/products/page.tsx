@@ -27,7 +27,6 @@ export default function ProductsAdminPage() {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  // Simple "auth" check - in a real app, use proper admin validation
   useEffect(() => {
     if (!user) {
       router.push("/signin");

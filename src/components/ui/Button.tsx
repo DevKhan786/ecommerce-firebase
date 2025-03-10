@@ -1,5 +1,5 @@
 // components/ui/Button.tsx
-import React, { forwardRef, ElementType } from "react";
+import React, { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -49,8 +49,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className
     );
 
-    // For simplicity, let's just render the button directly
-    // and handle asChild in the component where it's used
     return (
       <button
         className={buttonStyles}

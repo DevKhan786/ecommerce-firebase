@@ -80,8 +80,9 @@ const ProductForm = ({ onSuccess }: ProductFormProps) => {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setError(errorMessage);
       console.error("Error adding product:", err);
     } finally {
       setIsLoading(false);

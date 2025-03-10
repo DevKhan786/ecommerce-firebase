@@ -1,53 +1,19 @@
 // app/api/webhook/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebase/admin";
-import { headers } from "next/headers";
 import stripe from "@/lib/stripe/config";
-import {
-  doc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  limit,
-  getDocs,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
+import {} from "firebase/firestore";
+
 import { createOrderAdmin } from "@/lib/firebase/adminDb";
 
-// Disable body parsing, need raw body for Stripe webhook
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-async function getOrderByPaymentIntentId(paymentIntentId: string) {
-  try {
-    const ordersRef = adminDb.collection("orders");
-    const snapshot = await ordersRef
-      .where("paymentIntentId", "==", paymentIntentId)
-      .limit(1)
-      .get();
-
-    if (snapshot.empty) {
-      return null;
-    }
-
-    return {
-      id: snapshot.docs[0].id,
-      ...snapshot.docs[0].data(),
-    };
-  } catch (error) {
-    console.error("Error getting order by payment intent ID:", error);
-    return null;
-  }
-}
-
 export async function POST(request: NextRequest) {
   const body = await request.text();
 
-  // Get the signature from the header directly without using headers()
   const signature = request.headers.get("stripe-signature");
 
   if (!signature) {
@@ -69,9 +35,10 @@ export async function POST(request: NextRequest) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
-      { message: `Webhook Error: ${err.message}` },
+      { message: `Webhook Error: ${errorMessage}` },
       { status: 400 }
     );
   }
@@ -81,13 +48,12 @@ export async function POST(request: NextRequest) {
     console.log("Processing payment intent:", paymentIntent.id);
 
     try {
-      // Create or update order in Firestore
       await createOrderAdmin({
         userId: paymentIntent.metadata?.userId || "guest",
-        items: [], // You'd need to store cart items in the session or metadata
-        totalAmount: paymentIntent.amount / 100, // Convert cents to dollars
+        items: [],
+        totalAmount: paymentIntent.amount / 100,
         status: "processing",
-        shippingAddress: {}, // You'd need to store this in metadata
+        shippingAddress: {},
         paymentIntentId: paymentIntent.id,
       });
       console.log("Order created successfully for payment:", paymentIntent.id);

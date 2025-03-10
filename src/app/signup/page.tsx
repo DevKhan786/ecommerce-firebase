@@ -44,16 +44,19 @@ export default function SignUpPage() {
       const userCredential = await createUser(email, password);
       setUser(userCredential.user);
       router.push("/");
-    } catch (err: any) {
-      console.error(err);
-      if (err.code === "auth/email-already-in-use") {
-        setError("Email already in use");
-      } else if (err.code === "auth/invalid-email") {
-        setError("Invalid email address");
-      } else if (err.code === "auth/weak-password") {
-        setError("Password is too weak");
-      } else {
-        setError("An error occurred. Please try again.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      console.error(errorMessage);
+      if (err && typeof err === "object" && "code" in err) {
+        if (err.code === "auth/email-already-in-use") {
+          setError("Email already in use");
+        } else if (err.code === "auth/invalid-email") {
+          setError("Invalid email address");
+        } else if (err.code === "auth/weak-password") {
+          setError("Password is too weak");
+        } else {
+          setError("An error occurred. Please try again.");
+        }
       }
     } finally {
       setIsLoading(false);

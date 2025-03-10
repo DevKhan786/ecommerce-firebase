@@ -29,17 +29,22 @@ export default function SignInPage() {
       const userCredential = await signIn(email, password);
       setUser(userCredential.user);
       router.push("/");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      if (
-        err.code === "auth/user-not-found" ||
-        err.code === "auth/wrong-password"
-      ) {
-        setError("Invalid email or password");
-      } else if (err.code === "auth/too-many-requests") {
-        setError("Too many failed login attempts. Please try again later.");
+
+      if (err && typeof err === "object" && "code" in err) {
+        if (
+          err.code === "auth/user-not-found" ||
+          err.code === "auth/wrong-password"
+        ) {
+          setError("Invalid email or password");
+        } else if (err.code === "auth/too-many-requests") {
+          setError("Too many failed login attempts. Please try again later.");
+        } else {
+          setError("An error occurred. Please try again.");
+        }
       } else {
-        setError("An error occurred. Please try again.");
+        setError("An unexpected error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -86,7 +91,7 @@ export default function SignInPage() {
 
           <div className="mt-6 text-center">
             <p className="text-gray-500">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-indigo-700 hover:underline">
                 Sign up
               </Link>

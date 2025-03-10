@@ -12,7 +12,7 @@ import { formatCurrency } from "@/lib/utils";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, getTotalPrice, clearCart } = useCartStore();
+  const { items, getTotalPrice } = useCartStore();
   const { user } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function CheckoutPage() {
 
     try {
       // Form validation
-      for (const [key, value] of Object.entries(formData)) {
+      for (const [value] of Object.entries(formData)) {
         if (value.trim() === "") {
           throw new Error(`Please fill in all fields`);
         }
@@ -90,8 +90,9 @@ export default function CheckoutPage() {
       if (data.url) {
         window.location.href = data.url;
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

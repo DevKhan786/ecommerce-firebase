@@ -17,7 +17,6 @@ if (!apps.length) {
       }),
     });
   } else {
-    // Use default app initialization (relies on GOOGLE_APPLICATION_CREDENTIALS or other defaults)
     initializeApp();
   }
 }

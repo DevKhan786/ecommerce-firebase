@@ -13,7 +13,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
       <div className="flex flex-col items-center justify-center py-12">
         <h3 className="text-xl font-semibold mb-4">No products found</h3>
         <p className="text-gray-500">
-          Try adjusting your search or filter to find what you're looking for.
+          Try adjusting your search or filter to find what you&apos;re looking for.
         </p>
       </div>
     );
