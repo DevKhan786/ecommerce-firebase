@@ -1,7 +1,6 @@
 "use client";
 
-// app/checkout/success/page.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Container from "@/components/Container";
@@ -9,7 +8,7 @@ import Button from "@/components/ui/Button";
 import { FiCheckCircle } from "react-icons/fi";
 import { useCartStore } from "@/store/useCartStore";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const { clearCart } = useCartStore();
@@ -26,7 +25,7 @@ export default function CheckoutSuccessPage() {
           <FiCheckCircle className="text-green-500 w-24 h-24" />
         </div>
 
-        <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!</h1>
+        <h1 className="text-3xl font-bold mb-4">Thank You for Your Order!!</h1>
 
         <p className="text-gray-600 mb-8">
           Your order has been placed successfully. We&apos;ve sent a
@@ -51,5 +50,13 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </Container>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }
