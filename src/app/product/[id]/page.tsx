@@ -5,7 +5,6 @@ import Container from "@/components/Container";
 import ProductImage from "@/components/Product/ProductImage";
 import ProductInfo from "@/components/Product/ProductInfo";
 import { getProduct, getProducts } from "@/lib/firebase/db";
-
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -16,9 +15,7 @@ export async function generateStaticParams() {
 }
 
 interface Props {
-  params: {
-    id: string;
-  };
+  params: Record<string, string>;
 }
 
 export default async function ProductPage({ params }: Props) {
