@@ -15,7 +15,10 @@ export async function generateStaticParams() {
 }
 
 interface Props {
-  params: Record<string, string>;
+  params: {
+    id: string;
+  };
+  searchParams?: { [key: string]: string | string[] };
 }
 
 export default async function ProductPage({ params }: Props) {
