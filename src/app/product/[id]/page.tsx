@@ -5,6 +5,7 @@ import Container from "@/components/Container";
 import ProductImage from "@/components/Product/ProductImage";
 import ProductInfo from "@/components/Product/ProductInfo";
 import { getProduct, getProducts } from "@/lib/firebase/db";
+
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -14,12 +15,10 @@ export async function generateStaticParams() {
   }));
 }
 
-// src/app/product/[id]/page.tsx
 export default async function ProductPage({
   params,
 }: {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] };
 }) {
   const product = await getProduct(params.id);
 

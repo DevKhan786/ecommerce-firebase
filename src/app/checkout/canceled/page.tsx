@@ -23,11 +23,11 @@ export default function CheckoutCanceledPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg">
             <Link href="/">Continue Shopping</Link>
           </Button>
 
-          <Button size="lg" asChild>
+          <Button size="lg">
             <Link href="/cart">Return to Cart</Link>
           </Button>
         </div>
